@@ -1,0 +1,189 @@
+\documentclass[a4paper,oneside]{memoir}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{wallpaper}
+\usepackage{palatino}
+\usepackage{hyperref}
+\usepackage{csquotes}
+%linespacing
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+
+% Bibliography
+\usepackage[style=authoryear]{biblatex}
+\addbibresource{bib.bib}
+\bibliography{bib}
+
+% Promote sections and subsections
+\setheadfoot{\onelineskip}{2\onelineskip}
+\setheaderspaces{*}{1mm}{*}
+% \chapterstyle{plain} % needed?
+\checkandfixthelayout
+
+\renewcommand{\thesection}{\arabic{section}}
+\makeatletter
+\let\l@section\l@chapter
+\makeatother
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\makeatletter
+\let\l@subsection\l@section
+\let\l@section\l@chapter
+\makeatother
+
+% Glossary
+\usepackage[numberedsection=nameref]{glossaries}
+\renewcommand{\glossarypreamble}{\label{glos}}
+\makeglossaries
+\include{glossary.tex}
+\makeglossaries
+% Setup captions
+\captionstyle[\centering]{\centering}
+\changecaptionwidth
+\captionwidth{0.8\linewidth}
+
+% Protect against widows and orphans
+%\clubpenalty=10000
+%\widowpenalty=10000
+
+%\linespread{1.2}
+
+\raggedbottom
+
+\chapterstyle{ger}
+
+\maxsecnumdepth{subsection}
+
+%%  Setup fancy style quotation
+%%  ==================================================================
+%\usepackage{tikz}
+%\usepackage{framed}
+
+%\newcommand*\quotefont{\fontfamily{fxl}} % selects Libertine for quote font
+
+% Make commands for the quotes
+%\newcommand*{\openquote}{\tikz[remember picture,overlay,xshift=-15pt,yshift=-10pt]
+%     \node (OQ) {\quotefont\fontsize{60}{60}\selectfont``};\kern0pt}
+%\newcommand*{\closequote}{\tikz[remember picture,overlay,xshift=15pt,yshift=5pt]
+%     \node (CQ) {\quotefont\fontsize{60}{60}\selectfont''};}
+
+% select a colour for the shading
+%\definecolor{shadecolor}{rgb}{1,1,1}
+
+% wrap everything in its own environment
+%\newenvironment{shadequote}%
+%{\begin{snugshade}\begin{quote}\openquote}
+%{\hfill\closequote\end{quote}\end{snugshade}}
+
+%%  Begin document
+%%  ==================================================================
+\begin{document}
+
+%%  Begin title page
+%%  ==================================================================
+    \thispagestyle{empty}
+    \ULCornerWallPaper{1}{ku-coverpage/nat-farve.pdf}
+    \ULCornerWallPaper{1}{ku-coverpage/diku-en.pdf}
+    \begin{adjustwidth}{-3cm}{-1.5cm}
+    %\vspace*{-1cm}
+    %\textbf{\Huge Free topic} \\
+    \vspace*{2.5cm}
+    \textbf{\Huge Modelling learning systems} \\
+    \vspace*{.1cm}
+    {\Huge  A DSL for cognitive neuroscientist}\\
+    \begin{tabbing}
+    % adjust the hspace below for the longest author name
+    Jens Egholm Pedersen \hspace{1cm} \= \texttt{<xtp778@alumni.ku.dk>} \\
+    \\[11cm]
+
+    \textbf{\Large Supervisor} \\
+    Martin Elsman \hspace{1cm} \texttt{<mael@di.ku.dk>}
+    \end{tabbing}
+    \end{adjustwidth}
+    \newpage
+    \ClearWallPaper
+%%  ==================================================================
+%%  End title page
+
+
+\section{Introduction}
+In the past years machine learning has surpassed humans in some recognition
+tasks, and the development shows no signs of slowing down.
+These developments are however based on relatively old research on neural
+networks \autocite{Nilsson2009, russel2007}.
+Newer investigation into rehabilitation and learning indicates that such
+networks alone cannot account for the same amount of learning that happens
+in the brain \autocite{Mogensen2011, block2007, russel2007, Moravec98, dennett2017}.
+For that reason the breakthroughs in machine learning is hard to transfer
+to the domain of cognitive neuroscience.
+
+This paper takes two steps towards remedying this.
+First by describing a domain-specific language (DSL) that is capable of
+representing the concepts of learning systems in the domain of neuroscience.
+Second by validating the DSL through the modelling of a small learning
+task, which will be executed on standard machine architecture.
+
+The hope is that the DSL will lay the foundation for a representation of
+learning and learning concepts, that will serve as better models of inference
+as well as accurate simulation tools for scientist.
+
+\subsection{Structure}
+This paper is structered ...
+
+\subsection{Problem statement}
+...
+
+\section{Theory}
+This section accounts for the theoretical foundation of paper and is divided
+into three parts.
+The first part concerns the broad topic of computation and learning in neural
+systems as seen from the perspective of computational neuroscience. By focusing
+on cognition, plasticity, learning and rehabilitation, it derives
+the necessary and sufficient language abstractions to capture the complexity
+of the domain.
+The second part introduces traditional machine learning from the perspective of
+computer science. These concepts will be applied when implementing learning
+models in section \ref{volr}.
+And lastly the theoretical background for language abstractions and domain
+specific languages will be treated.
+
+\subsection{Computation and learning in neural systems}
+\begin{quote}
+  Activity-dependent synaptic plasticity is widely believed to be the basic
+  phenomenon underlying learning and memory \autocite{dayan2001}.
+\end{quote}
+
+Commonly referred to as \textit{what fires together, wires together}, Hebbian
+learning suggests that synaptic connections from neuron $A$ to neuron $B$
+are strengthened or weakened when neuron $A$ excites or inhibits the chance of
+firiing neuron $B$ respectively \autocite{dayan2001}.
+Hebbian learning is believed to play a large part in the plastic nature of the
+brain, especially within learning and memory formation
+\autocite{dayan2001, Johnston2009, Robertson1999}.
+
+\autocite{Robertson1999} studied patients during
+rehabilitation of brain damage and conjectured that learning --- whether when the
+brain acquires new information or recovers from lost information --- occurs based
+on the structural changes induced by the Hebbian principle
+\autocite{Robertson1999}.
+
+\autocite{Mogensen2011}
+
+\subsubsection{Reorganisation of elementary functions}
+
+\subsection{Machine learning}
+
+\subsection{Language abstractions}
+
+\section{Volr: A DSL for learning systems}
+\label{volr}
+
+\clearpage
+
+\printglossary
+
+\printbibliography
+
+\end{document}
