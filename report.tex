@@ -116,18 +116,18 @@ networks \autocite{Nilsson2009, russel2007}.
 Newer investigation into rehabilitation and learning indicates that such
 networks alone cannot account for the same amount of learning that happens
 in the brain \autocite{Mogensen2011, block2007, russel2007, Moravec98, dennett2017}.
-For that reason the breakthroughs in machine learning is hard to transfer
+For that reason the breakthroughs in machine learning are hard to transfer
 to the domain of cognitive neuroscience.
 
 As an attempt to remedy this, this project sets out to define a domain-specific
 language (DSL) that is capable of representing the concepts of learning systems
 within the domain of neuroscience.
-The latter part of the paper DSL is validated through the modelling of a small
+The latter part of the paper validates this DSL through the modelling of a small
 learning task. The benchmark will be written in \gls{futhark} and compiled to
 the \gls{opencl} standard, but the DSL abstraction allows it to be executed on
 any machine architecture.
 
-The hope is that the DSL will lay the foundation for a more accurate scientific
+The goal is for the DSL to lay the foundation for a more accurate scientific
 representation of learning and learning concepts, serving as a more approachable
 simulation tool for cognitive neuroscience.
 
@@ -135,10 +135,13 @@ simulation tool for cognitive neuroscience.
 %This paper is structered ...
 
 \subsection{Problem statement}
-By examining theories and concepts from the domain of cognitive neuroscience
-this paper examines the hypothesis that \textit{it is possible to model
-machine learning tasks in a DSL that is agnostic of the learning system
-implementation}. This examination will happen in two steps:
+Building on theories and concepts of the domain of cognitive neuroscience
+this paper examines the hypothesis that
+\textit{
+  the DSL presented in this paper can model meaningful machine learning
+  tasks for the cognitive neurosciences,
+  agnostic of the learning system implementation}.
+The paper will approach this in two steps:
 
 \begin{enumerate}
   \item A DSL abstraction for the expression of learning tasks,
