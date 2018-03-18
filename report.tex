@@ -37,7 +37,7 @@
 \usepackage[numberedsection=nameref]{glossaries}
 \renewcommand{\glossarypreamble}{\label{glos}}
 \makeglossaries
-\include{glossary.tex}
+\include{glossary}
 \makeglossaries
 % Setup captions
 \captionstyle[\centering]{\centering}
@@ -91,8 +91,8 @@
     %\textbf{\Huge Free topic} \\
     \vspace*{2.5cm}
     \textbf{\Huge Modelling learning systems} \\
-    \vspace*{.1cm}
-    {\Huge  A DSL for cognitive neuroscientist}\\
+    \vspace*{.8cm}
+    {\huge  A DSL for cognitive neuroscientist}\\
     \begin{tabbing}
     % adjust the hspace below for the longest author name
     Jens Egholm Pedersen \hspace{1cm} \= \texttt{<xtp778@alumni.ku.dk>} \\
@@ -119,21 +119,34 @@ in the brain \autocite{Mogensen2011, block2007, russel2007, Moravec98, dennett20
 For that reason the breakthroughs in machine learning is hard to transfer
 to the domain of cognitive neuroscience.
 
-This paper takes two steps towards remedying this.
-First by describing a domain-specific language (DSL) that is capable of
-representing the concepts of learning systems in the domain of neuroscience.
-Second by validating the DSL through the modelling of a small learning
-task, which will be executed on standard machine architecture.
+As an attempt to remedy this, this project sets out to define a domain-specific
+language (DSL) that is capable of representing the concepts of learning systems
+within the domain of neuroscience.
+The latter part of the paper DSL is validated through the modelling of a small
+learning task. The benchmark will be written in \gls{futhark} and compiled to
+the \gls{opencl} standard, but the DSL abstraction allows it to be executed on
+any machine architecture.
 
-The hope is that the DSL will lay the foundation for a representation of
-learning and learning concepts, that will serve as better models of inference
-as well as accurate simulation tools for scientist.
+The hope is that the DSL will lay the foundation for a more accurate scientific
+representation of learning and learning concepts, serving as a more approachable
+simulation tool for cognitive neuroscience.
 
-\subsection{Structure}
-This paper is structered ...
+%\subsection{Structure}
+%This paper is structered ...
 
 \subsection{Problem statement}
-...
+By examining theories and concepts from the domain of cognitive neuroscience
+this paper examines the hypothesis that \textit{it is possible to model
+machine learning tasks in a DSL that is agnostic of the learning system
+implementation}. This examination will happen in two steps:
+
+\begin{enumerate}
+  \item A DSL abstraction for the expression of learning tasks,
+        based on the REF model from \autocite{Mogensen2011}.
+  \item A case study of the DSL, expressing a learning task in a Krechevsky
+        T-maze \autocite{Krechevsky1932} backed by a traditional machine
+        learning implementation in \gls{futhark}.
+\end{enumerate}
 
 \section{Theory}
 This section accounts for the theoretical foundation of paper and is divided
@@ -144,10 +157,10 @@ on cognition, plasticity, learning and rehabilitation, it derives
 the necessary and sufficient language abstractions to capture the complexity
 of the domain.
 The second part introduces traditional machine learning from the perspective of
-computer science. These concepts will be applied when implementing learning
-models in section \ref{volr}.
-And lastly the theoretical background for language abstractions and domain
-specific languages will be treated.
+computer science. These concepts will be applied in the validation phase of
+learning model abstractions in section \ref{case}.
+In the final part the theoretical background for linguistic abstractions and
+the construction of domain specific languages will be treated.
 
 \subsection{Computation and learning in neural systems}
 \begin{quote}
@@ -158,7 +171,7 @@ specific languages will be treated.
 Commonly referred to as \textit{what fires together, wires together}, Hebbian
 learning suggests that synaptic connections from neuron $A$ to neuron $B$
 are strengthened or weakened when neuron $A$ excites or inhibits the chance of
-firiing neuron $B$ respectively \autocite{dayan2001}.
+firing neuron $B$ respectively \autocite{dayan2001}.
 Hebbian learning is believed to play a large part in the plastic nature of the
 brain, especially within learning and memory formation
 \autocite{dayan2001, Johnston2009, Robertson1999}.
@@ -172,6 +185,7 @@ on the structural changes induced by the Hebbian principle
 \autocite{Mogensen2011}
 
 \subsubsection{Reorganisation of elementary functions}
+\label{ref}
 
 \subsection{Machine learning}
 
@@ -179,6 +193,9 @@ on the structural changes induced by the Hebbian principle
 
 \section{Volr: A DSL for learning systems}
 \label{volr}
+
+\section{Case study: applying Volr in a Krechevsky maze}
+\label{case}
 
 \clearpage
 
