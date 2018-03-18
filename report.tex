@@ -92,7 +92,7 @@
     \vspace*{2.5cm}
     \textbf{\Huge Modelling learning systems} \\
     \vspace*{.8cm}
-    {\huge  A DSL for cognitive neuroscientist}\\
+    {\huge  A DSL for cognitive neuroscientists}\\
     \begin{tabbing}
     % adjust the hspace below for the longest author name
     Jens Egholm Pedersen \hspace{1cm} \= \texttt{<xtp778@alumni.ku.dk>} \\
@@ -179,16 +179,67 @@ Hebbian learning is believed to play a large part in the plastic nature of the
 brain, especially within learning and memory formation
 \autocite{dayan2001, Johnston2009, Robertson1999}.
 
+\subsubsection{Reorganisation of elementary functions}
+\label{ref}
+
 \autocite{Robertson1999} studied patients during
 rehabilitation of brain damage and conjectured that learning --- whether when the
 brain acquires new information or recovers from lost information --- occurs based
 on the structural changes induced by the Hebbian principle
-\autocite{Robertson1999}.
+\autocite{Robertson1999}. They further concluded that the damaged brain areas
+regenerate themselves based on this principle \autocite{Robertson1999}.
+\autocite{Mogensen2011} refutes this point by claiming that, while there
+may be some synaptogenesis, the rehabilitation mainly occurs when other parts
+of the brain learns to take over the lost functions \autocite{Mogensen2011}.
 
-\autocite{Mogensen2011}
+\autocite{Mogensen2011} arrives at a theoretical framework which divides the
+brain into localized and highly specialised, basic information
+processing elementary functions (EF). These modular functions are contained
+in a \textit{substructure} or \textit{local circuit}
+within the brain \autocite{Mogensen2011}.
 
-\subsubsection{Reorganisation of elementary functions}
-\label{ref}
+Multiple EFs interact to form algorithmic strategies (AS), established as
+a consequence of learning and experiencing \autocite{Mogensen2011}. An
+algorithmic strategy combines the capacity of multiple EFs into a single, and
+for the AS appropriate, response \autocite{Mogensen2011, Mogensen2012b}.
+
+The EF and AS interplay to create what Mogensen dubbed '\textit{surface
+phenomena}', which manifests the behaviour of the system \autocite{Mogensen2011}.
+Surface phenomena are the product of applying an AS to a particular problem,
+and Mogensen hypothesised that a given AS is evaluated for every success or
+failure of the surface behaviour predicted by that AS \autocite{Mogensen2011}.
+Such evaluation either strengthens the AS's association with the given
+behaviour scenario, or starts searching for another AS to perform the task
+instead \autocite{Mogensen2011}. According to Mogensen these changes
+are controlled by another AS dubbed the \textit{Supervisory Attentional
+System} (SAS) from \autocite{Norman1986} and happen using neuroplasticity to
+modify the synaptic connections within the SAS \autocite{Mogensen2011}.
+
+\textit{Behaviour} in the REF model is thus defined as the response of a single
+AS (that, in turn, consists of a number of EFs) to a given task
+\autocite{Mogensen2011, Mogensen2012b}.
+
+In an addition to the REF model, Mogensen introduced the idea of algorithmic
+module (AM), which is a module similar to an AS, but whose computations can be
+shared by many AS \autocite{Mogensen2012b}. In other words they may not
+directly mediate "a task solution" \autocite{Mogensen2017}.
+
+Another elaboration of the REF model arrives in the form of the REFGEN
+model (general reorganisation of elementary functions) \autocite{Mogensen2017}.
+The REFGEN model further explains the feedback mechanisms of the SAS
+to account for the 'learning' or adaptive feature of neural systems, by
+introducing two new concepts: the goal algorithmic strategy (GAS) and the
+comparator \autocite{Mogensen2017, Mogensen2012b}.
+In this new framework the SAS is tasked with maintaining the current state
+of the system, while the GAS reflects the goal towards which it is desired to
+to move (for instance the exit condition in a maze) \autocite{Mogensen2017}.
+For this to be useful a comparator is needed to constantly compare the SAS
+and GAS (the current state versus the goal), such as to select the optimal AS
+for the task at hand \autocite{Mogensen2017}. The feedback (backpropagation)
+from the actuation on the surrounding world is received by the comparator,
+who will assert influence on the SAS and GAS to better account for the new
+reality \autocite{Mogensen2017}.
+
 
 \subsection{Machine learning}
 
