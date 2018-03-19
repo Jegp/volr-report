@@ -102,7 +102,9 @@
     Martin Elsman \hspace{1cm} \texttt{<mael@di.ku.dk>}
     \end{tabbing}
     \end{adjustwidth}
+
     \newpage
+
     \ClearWallPaper
 %%  ==================================================================
 %%  End title page
@@ -247,6 +249,28 @@ reality \autocite{Mogensen2017}.
 
 \section{Volr: A DSL for learning systems}
 \label{volr}
+
+\begin{verbatim}
+  model = module , { space , "," , space , module};
+
+  module = name , space , block;
+
+  block = "{" , space , field list , space , "}";
+  field list = field , { space , "," , space , field };
+  field = name , [space] , ":=" , [space] , expression;
+  expression = name , number;
+
+  name = letter , { letter | digit };
+  letter = ? all Unicode characters ?;
+
+  space = white space , { space character };
+  space character = ? single space character ? | "\\t" | "\\n";
+
+  number = integer , ["." , {digit}];
+  integer = ["-"] , digit , {digit};
+  digit = "0" | "1" | "2" | "3" | "4"
+        | "5" | "6" | "7" | "8" | "9";
+\end{verbatim}
 
 \section{Case study: applying Volr in a Krechevsky maze}
 \label{case}
