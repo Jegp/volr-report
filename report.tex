@@ -6,6 +6,7 @@
 \usepackage{palatino}
 \usepackage{hyperref}
 \usepackage{csquotes}
+\usepackage{listings}
 %linespacing
 \usepackage{setspace}
 \renewcommand{\baselinestretch}{1.5}
@@ -181,6 +182,8 @@ Hebbian learning is believed to play a large part in the plastic nature of the
 brain, especially within learning and memory formation
 \autocite{dayan2001, Johnston2009, Robertson1999}.
 
+% TODO: Write about competition
+
 \subsubsection{Reorganisation of elementary functions}
 \label{ref}
 
@@ -213,9 +216,9 @@ failure of the surface behaviour predicted by that AS \autocite{Mogensen2011}.
 Such evaluation either strengthens the AS's association with the given
 behaviour scenario, or starts searching for another AS to perform the task
 instead \autocite{Mogensen2011}. According to Mogensen these changes
-are controlled by another AS dubbed the \textit{Supervisory Attentional
-System} (SAS) from \autocite{Norman1986} and happen using neuroplasticity to
-modify the synaptic connections within the SAS \autocite{Mogensen2011}.
+are controlled by a specialised AS dubbed the \textit{Supervisory Attentional
+System} (SAS) from \autocite{Norman1986}, manifested through neuroplastic
+changes in the synaptic connections within the SAS \autocite{Mogensen2011}.
 
 \textit{Behaviour} in the REF model is thus defined as the response of a single
 AS (that, in turn, consists of a number of EFs) to a given task
@@ -242,35 +245,13 @@ from the actuation on the surrounding world is received by the comparator,
 who will assert influence on the SAS and GAS to better account for the new
 reality \autocite{Mogensen2017}.
 
-
 \subsection{Machine learning}
+
 
 \subsection{Language abstractions}
 
 \section{Volr: A DSL for learning systems}
 \label{volr}
-
-\begin{verbatim}
-  model = module , { space , "," , space , module};
-
-  module = name , space , block;
-
-  block = "{" , space , field list , space , "}";
-  field list = field , { space , "," , space , field };
-  field = name , [space] , ":=" , [space] , expression;
-  expression = name , number;
-
-  name = letter , { letter | digit };
-  letter = ? all Unicode characters ?;
-
-  space = white space , { space character };
-  space character = ? single space character ? | "\\t" | "\\n";
-
-  number = integer , ["." , {digit}];
-  integer = ["-"] , digit , {digit};
-  digit = "0" | "1" | "2" | "3" | "4"
-        | "5" | "6" | "7" | "8" | "9";
-\end{verbatim}
 
 \section{Case study: applying Volr in a Krechevsky maze}
 \label{case}
@@ -280,5 +261,40 @@ reality \autocite{Mogensen2017}.
 \printglossary
 
 \printbibliography
+
+\section{Appendix A: Volr EBNF}
+\label{ebnf}
+
+\begin{verbatim}
+  model = ( stimulus | strategy | response )
+        , { [ space ] , "," , [ space ] , ( stimulus | strategy | response ) };
+
+  stimulus = "stimulus" , [ space ] , name , [ space ] , dimensionality;
+  response = "response" , [ space ] , dimensionality , [ space ] , input
+           , [ space ] , { "select" , [ space ] , ( "random" | "best" ) };
+  strategy = "strategy" , [ space ] , name , [ space ] , input
+           , [ space ] , ( functions | function , [ space ] , { function } );
+
+  functions = "functions" , [ space ] , dimensionality;
+  function = "function" , [ space ] , name , dimensionality;
+
+  input = "from" , [ space ] , name , { [ space ] , name };
+  dimensionality = "[" , [ space ] , integer , [ space ] , "]";
+
+  name list = name , { [ space ] , "," , name };
+  name = letter , { letter | digit };
+  letter = ? non-whitespace Unicode character ?;
+  space = space character , { space character };
+  space character = ? white space character ?;
+
+  number = integer , ["." , digit , {digit}];
+  integer = ["-"] , digit , {digit};
+  digit = "0" | "1" | "2" | "3" | "4"
+        | "5" | "6" | "7" | "8" | "9";
+\end{verbatim}
+
+\section{Appendix B: Learning network with two features in Volr}
+
+\lstinputlisting{two_features.volr}
 
 \end{document}

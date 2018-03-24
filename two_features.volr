@@ -1,0 +1,13 @@
+stimulus input [2]
+
+strategy s1 from input
+  functions [10]
+
+strategy s2 from s1
+  functions [10]
+
+strategy s3 from s1
+  functions [5]
+
+response [1] from s2, s3
+  select best
