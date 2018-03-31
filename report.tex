@@ -180,8 +180,8 @@ of the domain.
 The second part introduces traditional machine learning from the perspective of
 computer science. These concepts will be applied in the validation phase of
 learning model abstractions in section \ref{case}.
-In the final part the theoretical background for linguistic abstractions and
-the construction of domain specific languages will be treated.
+In the final part the theoretical and methodological background for the
+development of \gls{dsl}s will be treated.
 
 \section{Learning in neural systems}
 \begin{quote}
@@ -289,7 +289,7 @@ learning progression.
 \subsection{Learning in perceptron networks}
 Inspired by the biological brain, models for neural networks have been applied
 in computer science since the 1950s, and have become integral part of machine
-learning \autocite{Nilsson2009, Pedersen2017, russel2007}.
+learning \autocite{Nilsson2009, russel2007}.
 Neurons are essentially functions that operate on some input and respond with
 some output \autocite{russel2007}. The inputs for a neuron are weighted to give
 different input channels - or input dimensions - varying significance. These
@@ -298,8 +298,8 @@ neuron should ‘fire’ or not \autocite{Nilsson2009}. Sigmoid or hyperbolic ta
 are popular
 activation functions for numerical predictions because of their steep logistic
 properties while retaining differentiability. Neural networks excel in their
-adaptability and have long been applied to the field of language processing
-\autocite{Jurafsky2000, russel2007}.
+adaptability and have been applied to many domains with great success
+\autocite{schmidhuber2014, russel2007, Pedersen2017}.
 
 Simple neural networks can be stacked in layers, where each neuron will assign
 weights to the input, to determine its significance for the activation function
@@ -319,14 +319,14 @@ A domain specific language (DSL) is a generalisation of a domain into a
 collection of tokens \autocite{Mernik2005}. DSL generally offers more
 expressiveness and require less programming expertise \autocite{Mernik2005, Sestoft2017}.
 However, designing DSLs requires both deep domain knowledge and language
-development expertise \autocite{Mernik2005}. Bad DSL design can become limiting
-and counterproductive \autocite{Mernik2005}.
+development expertise and bad DSL design can become limiting
+and counterproductive \autocite{Mernik2005, Sestoft2017}.
 
-Contrary to the development of general programming languages, DSL development
-is less standardised within the litterature \autocite{Mernik2005, Deursen2002}.
-However, there are strong recommendations to perform rigorous analysis of the
+Compared to the development of general programming languages, DSL development
+is less standardised within the literature \autocite{Mernik2005, Deursen2002}.
+However, there are strong recommendations to perform rigorous analyses of the
 target domain and extract precise features necessary for the DSL construction
-\autocite{Mernik2005, Deurson2002}.
+\autocite{Mernik2005, Deursen2002}.
 
 DSLs can be implemented either as a standalone language or embedded in a more
 general programming language \autocite{Mernik2005}. A standalone approach
@@ -335,20 +335,75 @@ the environment and tools that normally follows a programming language
 \autocite{Mernik2005, Sestoft2017}. Conversely, an embedded approach will be
 more restricted with regards to syntax, but retains the infrastructure of the
 host language \autocite{Mernik2005}.\footnote{\cite{Mernik2005} lists a
-number of benefits and downsides for either approaches. They are too
-detailed to be reported here, but see \autocite[330-331]{Mernik2005}.}
+number of detailed benefits and downsides for either approaches. See
+\autocite[330-331]{Mernik2005}.}
 
-Futher, a DSL can either exploit the features of previous languages os
-invent new constructions \autocite{Mernik2005, Deursen2002}.
+Futher, a DSL can either reuse the syntax and structure of other, older
+languages or completely invent new constructions
+\autocite{Mernik2005, Deursen2002}. DSLs without any resemblance to previous
+languages and paradigms are difficult to develop and hard to memorise,
+especially for the user \autocite{Wile2004}.
+
+The target for the DSL can, but does not have to be, executable
+\autocite{Mernik2005}. One common approach for executable DSLs
+is to generate code that can be compiled by a separate environment, thus
+promoting reuse of code \autocite{Wile2004}.
+
+Lastly it is important to note that the introduction of a DSL is not only
+introducing the language abstraction itself, but can impose up to five
+innovations: artifacts, language, tools, infrastructure and methodology
+\autocite{Wile2004}. For that reason it is important for the DSL to be as
+close to the original domain as possible, without introducing unnecessary
+overhead \autocite{Wile2004, Mernik2005}.
 
 {\let\clearpage\relax\chapter{Volr: A DSL for learning systems}}
 \label{volr}
 
-Embedded vs. standalone
+Following the advise of \cite{Mernik2005} and \cite{Wile2004}, the theory of
+reorganisation of elementary functions from section \ref{ref}, has been
+applied to the domain of \gls{ml} as rigorously as possible.
+The resulting DSL has been dubbed \texttt{Volr}.
 
-Futhark: \autocite{Henriksen2017}
+Before accounting for the features and design decision of the language, it is
+important to motivate the reasoning for constructing a DSL.
+Research within the domain of (cognitive) neuroscience is juggling increasingly
+complex models, and are to an increasing degree overlapping with the domain of
+computer science.\footnote{This claim is implicit in a number of articles from both
+sides, and explicit in more recent literature. From the perspective of computer
+science, see for instance \autocite{Nilsson2009, walter2015, schmidhuber2014,
+russel2007}. From the perspective of cognitive science, see \autocite{Hohwy2009,
+dennett2017, dayan2001, sep:cognitive-science}.} Researchers within cognitive
+sciences are rarely equipped with strong programming knowledge, and the rapid
+development of \gls{ml} in the recent years has made it hard to keep track of
+state-of-the-art frameworks.\footnote{Within \gls{ml} alone there have been
+a surge of new projects in the last few years. Of particular note are
+Google's Tensorflow (from 2015), Microsoft Cognitive Toolkit (from 2016),
+Python's Scikit-learn (from 2007) and Pytorch (from 2016).}
 
-\gls{opencl}
+Another fact driving the decision to design a DSL was the particular need to
+build and extend specific features for cognitive neuroscience, such as
+neuron clusters (without layering) and lesions in the networks. These features
+would never enter regular \gls{ml} libraries, because of their strong
+focus on accuracy and performance \autocite{Nilsson2009, schmidhuber2014}.
+
+\section{Volr design decisions}
+Because of the requirement to design a few, but unique features a standalone
+approach was employed. The syntax has been kept simple and resembles that of
+the YAML (YAML Ain't Markup Language, \cite{yaml}). This style was chosen for
+its simplicity, widespread use along with its ability to express declarations.
+
+The language is parsed in Haskell using the open-source parser-combinator
+library \texttt{megaparsec} \autocite{mepaparsec}, and is available on GitHub
+\autocite{Pedersen2018:volr}.
+
+The DSL was clearly required to be executable to allow users to evaluate and
+analyse their models. The only backend supporting this currently is implemented
+in the data-parallel array programming language Futhark
+\autocite{Henriksen2017}, running on an \gls{opencl} backend. The implementation
+is also available on GitHub \autocite{Pedersen2018:futhark}.
+
+\section{Volr concepts}
+
 
 {\let\clearpage\relax\chapter{Case study: Krechevsky maze}}
 \label{case}
