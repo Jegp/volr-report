@@ -1,0 +1,13 @@
+digraph volr {
+  edge [labeldistance=3.0]
+  node [shape=plaintext, fontname="Open Sans"];
+  s [label=<Stimulus [1]>];
+  s1 [label=<Strategy<SUB>1</SUB> [4]>];
+  s2 [label=<Strategy<SUB>2</SUB> [3]>];
+  s3 [label=<Strategy<SUB>3</SUB> [5]>];
+  s -> s1 [label=<[1]>];
+  s1 -> s3 [label=<[4]>];
+  s -> s2 [label=<[1]>];
+  s2 -> s3 [label=<[3]>];
+  s3 -> "Response" [label=<[5]>];
+}

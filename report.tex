@@ -7,6 +7,9 @@
 \usepackage{hyperref}
 \usepackage{csquotes}
 \usepackage{listings}
+\usepackage{float}
+\usepackage{wrapfig}
+\restylefloat{figure}
 %linespacing
 \usepackage{setspace}
 \renewcommand{\baselinestretch}{1.5}
@@ -119,6 +122,22 @@
 \renewcommand\cftchapteraftersnumb{\normalfont}
 \renewcommand\cftbeforechapterskip{5pt plus 1pt}
 
+\vspace*{\fill}
+\begin{center}
+\textbf{Acknowledgements}
+\end{center}
+\begin{center}
+\begin{minipage}{.8\textwidth}
+
+I would like to thank the Unit for Cognitive Neuroscience in Copenhagen for
+the many talks and assistance in the making of this paper. The patience of
+Nicolaj Daugaard and Jesper Mogensen in particular deserves high praise.
+\end{minipage}
+\end{center}
+\vfill
+
+\newpage
+
 \frontmatter
 \tableofcontents*
 \newpage
@@ -136,10 +155,10 @@ For that reason the breakthroughs in machine learning are hard to transfer
 to the domain of cognitive neuroscience.
 
 As an attempt to remedy this, this project sets out to define a domain-specific
-language (DSL) that is capable of representing learning systems that resembles
+language (DSL) that is capable of representing learning systems that resemble
 those from the domain of neuroscience.
 
-The latter part of the paper validates this DSL through the modelling of a small
+The second part of the paper validates this DSL through the modelling of a small
 learning task. The benchmark will be written in \gls{futhark} and compiled to
 the \gls{opencl} standard. The language abstraction however, allows it to be
 executed on any machine architecture.
@@ -169,8 +188,8 @@ The paper will approach this in two steps:
 % This paper is built around theoretical concepts from cognitive neuroscience,
 % \gls{ml} and finally
 
-{\let\clearpage\relax\chapter{Theory}}
-This section accounts for the theoretical foundation of paper and is divided
+{\let\clearpage\relax\chapter{Theoretical Foundations}}
+This section accounts for the theoretical foundation of the paper and is divided
 into three parts.
 The first part concerns the broad topic of computation and learning in neural
 systems as seen from the perspective of computational neuroscience. By focusing
@@ -201,16 +220,16 @@ brain, especially within learning and memory formation
 \label{ref}
 
 \autocite{Robertson1999} studied patients during
-rehabilitation of brain damage and conjectured that learning --- whether when the
-brain acquires new information or recovers from lost information --- occurs based
+rehabilitation of brain damage and conjectured that learning --- either when
+acquiring new information or recovering from lost information --- occurs based
 on the structural changes induced by the Hebbian principle
 \autocite{Robertson1999}. They further concluded that the damaged brain areas
 regenerate themselves based on this principle \autocite{Robertson1999}.
-\autocite{Mogensen2011} refutes this point by claiming that, while there
+Mogensen refutes this point by claiming that, while there
 may be some synaptogenesis, the rehabilitation mainly occurs when other parts
 of the brain learns to take over the lost functions \autocite{Mogensen2011}.
 
-\autocite{Mogensen2011} arrives at a theoretical framework which divides the
+Mogensen arrives at a theoretical framework which divides the
 brain into localized and highly specialised, basic information
 processing elementary functions (EF). These modular functions are contained
 in a \textit{substructure} or \textit{local circuit}
@@ -227,15 +246,15 @@ Surface phenomena are the product of applying an AS to a particular problem,
 and Mogensen hypothesised that a given AS is evaluated for every success or
 failure of the surface behaviour predicted by that AS \autocite{Mogensen2011}.
 Such evaluation either strengthens the AS's association with the given
-behaviour scenario, or weakens et, potentially starting a search for another
+behaviour scenario, or weakens it, potentially starting a search for another
 AS to perform the task instead \autocite{Mogensen2011}.
 According to Mogensen these changes are controlled by a specialised AS dubbed
 the \textit{Supervisory Attentional System} (SAS) from \autocite{Norman1986},
 manifested through neuroplastic changes in the synaptic connections within
 the SAS \autocite{Mogensen2011}.
 
-\textit{Behaviour} in the REF model is thus defined as the response of a single
-AS (that, in turn, consists of a number of EFs) to a given task
+\textit{Behaviour} in the \gls{ref} model is thus defined as the response of a single
+AS to a given task, that in turn consists of a number of EFs
 \autocite{Mogensen2011, Mogensen2012b}.
 
 %In an addition to the REF model, Mogensen introduced the algorithmic
@@ -244,7 +263,7 @@ AS (that, in turn, consists of a number of EFs) to a given task
 %directly mediate "a task solution", but partake in many different task
 %situations \autocite{Mogensen2017}.
 
-An elaboration to the REF model arrived in the form of the REFGEN
+An elaboration to the \gls{ref} model arrived in the form of the REFGEN
 model (general reorganisation of elementary functions) \autocite{Mogensen2017}.
 The REFGEN model further explains the feedback mechanisms of the SAS
 to account for the 'learning' or adaptive feature of neural systems, by
@@ -253,7 +272,7 @@ comparator \autocite{Mogensen2017, Mogensen2012b}.
 
 In this new framework the SAS is tasked with maintaining the current state
 of the system, while the GAS reflects the goal towards which it is desired to
-to move (for instance the exit condition in a maze) \autocite{Mogensen2017}.
+to move, for instance the exit condition in a maze \autocite{Mogensen2017}.
 For this to be useful a comparator is needed to constantly compare the SAS
 and GAS (the current state versus the goal), such as to select the optimal AS
 for the task at hand \autocite{Mogensen2017}. The feedback (backpropagation)
@@ -268,8 +287,8 @@ Systems that display the capability of learning (or progressively improving on
 a certain task) are historically associated with the field of \gls{ml}.
 \Gls{ml} goes back to the 1950s, and is tightly coupled
 with artificial intelligence --- the idea of creating intelligence
-in machine \autocite{Nilsson2009, russel2007}.
-It is a large and active research field, why this section will strictly
+in machines \autocite{Nilsson2009, russel2007}.
+It is a large and active research field, and this is why this section will strictly
 focus on a brief introduction and motivation of the topic in the context of
 learning tasks. This will be followed by a more in-depth description of
 multilayered perceptron networks and progressive learning through stochastic
@@ -282,13 +301,13 @@ intelligent", where \textit{intelligence} is defined as the "quality that
 enables an entity to function appropriately and with foresight in its
 environment" \autocite[13]{Nilsson2009}. As Nilsson also points out, this
 covers a large range of systems such as recommender systems and image recognition
-tasks, which does not display higher cognitive functions \autocite[13]{Nilsson2009}.
+tasks, which do not display higher cognitive functions \autocite[13]{Nilsson2009}.
 In the context of this paper, the above definition suffices to cover basic
 learning progression.
 
 \subsection{Learning in perceptron networks}
 Inspired by the biological brain, models for neural networks have been applied
-in computer science since the 1950s, and have become integral part of machine
+in computer science since the 1950s, and have become an integral part of machine
 learning \autocite{Nilsson2009, russel2007}.
 Neurons are essentially functions that operate on some input and respond with
 some output \autocite{russel2007}. The inputs for a neuron are weighted to give
@@ -305,7 +324,7 @@ Simple neural networks can be stacked in layers, where each neuron will assign
 weights to the input, to determine its significance for the activation function
 \autocite{Nilsson2009}. By tuning the weights of the neurons, such groupings can
 learn to fire on certain input patterns \autocite{russel2007}. However,
-this structure have proved brittle and difficult to train because the
+this structure has proved to be brittle and difficult to train because the
 neurons do not retain their weights for long \autocite{Nilsson2009, russel2007}.
 \autocite{Rumelhart1988} suggested a method to avoid this instability by adjusting
 the weights of the neurons in retrospect with a method called back-propagation
@@ -316,8 +335,8 @@ descent \autocite{russel2007}.
 
 \section{Language abstractions}
 A domain specific language (DSL) is a generalisation of a domain into a
-collection of tokens \autocite{Mernik2005}. DSL generally offers more
-expressiveness and require less programming expertise \autocite{Mernik2005, Sestoft2017}.
+collection of tokens \autocite{Mernik2005}. A DSL generally offers more
+expressiveness and requires less programming expertise \autocite{Mernik2005, Sestoft2017}.
 However, designing DSLs requires both deep domain knowledge and language
 development expertise and bad DSL design can become limiting
 and counterproductive \autocite{Mernik2005, Sestoft2017}.
@@ -331,14 +350,14 @@ target domain and extract precise features necessary for the DSL construction
 DSLs can be implemented either as a standalone language or embedded in a more
 general programming language \autocite{Mernik2005}. A standalone approach
 leverages the freedom of an independent syntax, but avoids the benefits of
-the environment and tools that normally follows a programming language
-\autocite{Mernik2005, Sestoft2017}. Conversely, an embedded approach will be
+the environment and tools that normally follow a programming language
+\autocite{Mernik2005, Sestoft2017}. Conversely, an embedded approach is
 more restricted with regards to syntax, but retains the infrastructure of the
-host language \autocite{Mernik2005}.\footnote{\cite{Mernik2005} lists a
-number of detailed benefits and downsides for either approaches. See
+host language \autocite{Mernik2005}.\footnote{\cite{Mernik2005} provide a detailed list of
+ benefits and downsides for both approaches. See
 \autocite[330-331]{Mernik2005}.}
 
-Futher, a DSL can either reuse the syntax and structure of other, older
+Further, a DSL can either reuse the syntax and structure of other, older
 languages or completely invent new constructions
 \autocite{Mernik2005, Deursen2002}. DSLs without any resemblance to previous
 languages and paradigms are difficult to develop and hard to memorise,
@@ -347,9 +366,9 @@ especially for the user \autocite{Wile2004}.
 The target for the DSL can, but does not have to be, executable
 \autocite{Mernik2005}. One common approach for executable DSLs
 is to generate code that can be compiled by a separate environment, thus
-promoting reuse of code \autocite{Wile2004}.
+promoting the reuse of code \autocite{Wile2004}.
 
-Lastly it is important to note that the introduction of a DSL is not only
+Lastly, it is important to note that the introduction of a DSL is not only
 introducing the language abstraction itself, but can impose up to five
 innovations: artifacts, language, tools, infrastructure and methodology
 \autocite{Wile2004}. For that reason it is important for the DSL to be as
@@ -367,69 +386,204 @@ The resulting DSL has been dubbed \texttt{Volr}.
 Before accounting for the features and design decision of the language, it is
 important to motivate the reasoning for constructing a DSL.
 Research within the domain of (cognitive) neuroscience is juggling increasingly
-complex models, and are to an increasing degree overlapping with the domain of
+complex models, and is to an increasing degree overlapping with the domain of
 computer science.\footnote{This claim is implicit in a number of articles from both
-sides, and explicit in more recent literature. From the perspective of computer
+domains, and explicit in more recent literature. From the perspective of computer
 science, see for instance \autocite{Nilsson2009, walter2015, schmidhuber2014,
 russel2007}. From the perspective of cognitive science, see \autocite{Hohwy2009,
 dennett2017, dayan2001, sep:cognitive-science}.} Researchers within cognitive
 sciences are rarely equipped with strong programming knowledge, and the rapid
-development of \gls{ml} in the recent years has made it hard to keep track of
+development of \gls{ml} in recent years has made it hard to keep track of
 state-of-the-art frameworks.\footnote{Within \gls{ml} alone there have been
 a surge of new projects in the last few years. Of particular note are
 Google's Tensorflow (from 2015), Microsoft Cognitive Toolkit (from 2016),
 Python's Scikit-learn (from 2007) and Pytorch (from 2016).}
 
-Another fact driving the decision to design a DSL was the particular need to
+Another fact driving the decision to design a DSL is the particular need to
 build and extend specific features for cognitive neuroscience, such as
 neuron clusters (without layering) and lesions in the networks. These features
 would never enter regular \gls{ml} libraries, because of their strong
 focus on accuracy and performance \autocite{Nilsson2009, schmidhuber2014}.
 
 \section{Volr design decisions}
-Because of the requirement to design a few, but unique features a standalone
+Because of the requirement to design a few, but unique features, a standalone
 approach was employed. The syntax has been kept simple and resembles that of
 the YAML (YAML Ain't Markup Language, \cite{yaml}). This style was chosen for
-its simplicity, widespread use along with its ability to express declarations.
+its simplicity and widespread, use along with its ability to express declarations.
 
 The language is parsed in Haskell using the open-source parser-combinator
-library \texttt{megaparsec} \autocite{mepaparsec}, and is available on GitHub
+library \texttt{megaparsec} \autocite{megaparsec}, and is available on GitHub
 \autocite{Pedersen2018:volr}.
 
-The DSL was clearly required to be executable to allow users to evaluate and
-analyse their models. The only backend supporting this currently is implemented
+The DSL was required to be executable and to allow users to evaluate and
+analyse cognitive models. The only backend supporting this currently is implemented
 in the data-parallel array programming language Futhark
 \autocite{Henriksen2017}, running on an \gls{opencl} backend. The implementation
-is also available on GitHub \autocite{Pedersen2018:futhark}.
+uses perceptron networks with gradient descent backpropagation learning. The
+source code is available on GitHub \autocite{Pedersen2018:futhark}.
+
+The syntax of the DSL is described in EBNF notation and visualised in a
+railroad diagram available in appendix \ref{ebnf}.
 
 \section{Volr concepts}
+Transferring the concepts of the \gls{ref} model to a DSL is a complex task
+that necessitates simplification.
+To limit the pitfalls of developing the DSL as warned by \cite{Mernik2005},
+the present model has been developed in collaboration with the Unit for
+Cognitive Neuroscience in Copenhagen and the author of the \gls{ref} model,
+J. Mogensen.
 
+Three main concepts have been derived from the \gls{ref} model: A stimulus which
+serves as the input for a given learning system, a strategy which contains
+a number of (elementary) functions and finally a response, which outputs the
+activations of one or more strategies. The DSL allows for multiple
+strategies, but only a single stimulus and response. Both strategies and
+responses can however, use any combination of stimuli and strategies as their
+input. This allows for a graph-like structure, which represents the algorithmic
+strategies as described in the \gls{ref} model (see section \ref{ref}). Figure
+\ref{volr:graph} shows an example of such a graph.
+
+\begin{wrapfigure}{r}{0.42\textwidth}
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{volr.png}
+    \caption{An example learning graph in Volr.}
+    \label{volr:graph}
+  \end{center}
+\end{wrapfigure}
+
+As shown in figure \ref{volr:graph} stimulus, strategies and response are
+all associated with an integer that denotes their dimensionality.
+The dimensionality is necessary for several reasons:
+First, the network needs to learn from a given input, which is
+required to adhere to the dimensionality restriction.
+Second, the strategies can be combined to provide
+networks of different sizes, but the input for those strategies have to
+depend on the outputs of the previous layers, which requires them to combine
+the features.
+The dimensionality of the strategies entirely depends on the number of
+elementary functions (\texttt{functions}) associated with the strategy.
+Figure \ref{volr:graph} shows an example of this. Here, a singly dimensional
+input is fed into two strategies with four and three EFs respectively. They are
+then combined into a 7-dimensional input, which is reduced to five in the last
+strategy, and forwarded to the response.
+
+Stimuli and response sections further specify a file, from which the input data
+and expected output data is read. This is used to train the network according
+to the given data.
+
+Responses also allow to specify learning rates (\texttt{learning\_rate}) to
+adjust the learning rate of the underlying implementation.
+
+A 3- and 4-layer network can be seen in appendix \ref{volr:example}.
 
 {\let\clearpage\relax\chapter{Case study: Krechevsky maze}}
 \label{case}
 
-As pointed out by \cite{Mernik2005} quantitative evaluation of a DSL is hard,
-which is why this section will....
+This case study is based on the mazes built by Krechevsky in the
+1930's \autocite{Krechevsky1932}. Krechevsky researched the behaviour of
+rats by guiding them through carefully constructed mazes that gave the rats
+clues in the form of shapes and colours of light \autocite{Krechevsky1932}. Each
+fork showed one or more of the features, leading either to success (reward)
+or failure (blocked path). To illustrate such a maze, imagine a bright lamp
+being consistently installed at paths leading to reward, while complete
+darkness consistently points to dead ends. Here the rats would quickly learn
+to follow the lit paths to claim their reward \autocite{Krechevsky1932}.
+For the cognitive neurosciences this experiment is interesting, because it is
+feasible to introspect each maze decision and compare the decisions of the
+virtual system with real rats.
+
+Incidentally the mazes are easy to model because the features can be represented
+with simple boolean flags when they are present (\texttt{1}) or absent (\texttt{0}).
+Therefore, a simple maze with only T-junctions can be generated by showing the "rat"
+an array of input features and expecting it to make a choice: left or right.
+
+\section{Experiment result}
+The Krechevsky maze in the experiment is a simple two-feature maze with
+a single branching option, to give an immediate feedback for the learning
+network. For the sake of the experiment, the features in the maze are entirely
+consistent. A perfect network is thus expected to achieve a 100\% accuracy.
+
+Two networks were constructed to calculate the data: a 3-layer and 4-layer
+maze. Both use a sample size of 500.
+
+\begin{table}
+  \centering
+  \begin{tabular}{l c c}
+    & \textbf{3 layers} & \textbf{4 layers} \\
+    Runtime & 40.505ms & 49.137ms \\
+    Accuracy & 100\% & 100\%
+  \end{tabular}
+
+  \caption{Runtimes of volr networks in milliseconds, averaged over 100 runs.}
+  \label{case:runtimes}
+\end{table}
+
+The results are shown in table \ref{case:runtimes}. Both networks achieve
+a 100\% accuracy, which indicates that they are capable of learning the task
+at hand.
+Information about the execution and runtime environment can be found in
+appendix \ref{env}.
 
 \chapter{Discussion}
+This paper set out to examine whether a DSL can model meaningful machine
+learning tasks for the cognitive neurosciences. Building on
+relevant theory from cognitive science and computer science, a DSL, Volr,
+was presented. A backend executing to OpenCL was implemented and a
+Krechevsky-like maze was constructed and evaluated through two 3- and
+4-layered neural networks with backpropagation and gradient descent learning.
 
-\section{Conclusion}
+The evaluation showed that Volr successfully modelled the Krechevsky-maze
+task with different network configurations, and with the expected accuracy.
 
-\section{Future work}
-% Error reporting
-% A note on competition within the brain (feral neurons)
+The result is encouraging because it is easily scaleable to more complex
+mazes and other problems. The present study only examined a perfect maze where
+each feature was consistent. A possible extension of this would be to randomize the
+features and study the behaviour of the system. Similarly, this system could
+allow to support a form of "memory" where previous decisions are stored as
+\textit{breadcrumbs}, that can assist the virtual rat in its decision.
+
+With the concept of memory, the virtual model would be even closer to the biological model
+and its learning mechanism. This underlines the present work as an initial
+effort towards more elaborate modelling tools.
+
+Reviewing the hypothesis two shortcomings became apparent during the evaluation:
+accurately representing the \ref{ref} model in the DSL and modelling
+the mechanisms of the biological substrate.
+
+Notably two features from the \ref{ref} model were ignored in the paper: the
+GAS and the comparator. The GAS was partly implemented by the supervised
+learning strategy, in which the stochastic gradient descent learning
+continually improved the network towards the training data.
+But the model does not have control over the GAS and the mechanisms with
+which the network is improved.
+A more fitting approach to capture the GAS could be to implement
+reinforcement learning, where the goal is more clearly stated.
+The comparator was omitted because it required the
+implementation of multiple and competing strategies. This is however
+easier to mitigate by simply constructing multiple models and choosing
+the best network, based on some criterion.
+
+Another shortcoming of the approach is the Futhark implementation backed
+by traditional machine learning perceptron networks. These networks cannot
+accurately model neurons in the biological brain. The layered approach does not allow
+for the continuous feedback from neighbouring strategies, nor for the
+asynchronous workings of the neurons. A mediation of this could be to
+write a backend which supports such a clustered neuronal base, similar to
+the idea of the EF in the \gls{ref} model. Neuromorphic hardware would be
+particularly interesting to examine here, because they are capable of
+simulating exactly these properties.
 
 \clearpage
 
 \printglossary
 
-\printbibliography
-
-\newpage
-
 \appendix
+
 \chapter{Volr EBNF}
 \label{ebnf}
+
+A railroad diagram of the below EBNF is available online at
+\url{https://github.com/Jegp/volr-report/blob/master/railroad.png}.
 
 \begin{verbatim}
   model = ( stimulus | strategy | response )
@@ -460,11 +614,32 @@ which is why this section will....
 
 \clearpage
 
-\appendix
-\chapter{Learning network with two features in Volr}
+\chapter{3- and 4-layer learning networks in Volr}
+\label{volr:example}
 
 \lstinputlisting{two_features.volr}
 
-\clearpage
+\chapter{Benchmark informations}
+\label{env}
+The benchmark was executed on an Asus X550VX with an Intel i7 6700HQ 2.6GHz
+quad-core processor, 8 GB of DDR4 2133 MHz SDRAM and an NVIDIA GeForce GTX 950M
+(640 CUDA cores at 914MHz).
+
+The benchmark was run by the following command (standing in the directory of
+the volr project):
+\begin{verbatim}
+volr -f examples/4layer_500.volr
+\end{verbatim}
+
+Runtimes was extracted using a specific \texttt{-t} flag in the Futhark
+runtime, and re-run 100 times with the Futhark \texttt{-r} flag. The above
+command produces binaries in the \texttt{bin} folder, allowing us to execute
+100 iterations and put the results into the \texttt{times.txt} file:
+\begin{verbatim}
+cat examples/maze_x500.txt examples/maze_y500.txt \
+  | bin/futhark-model -r 100 -t times.txt
+\end{verbatim}
+
+\printbibliography
 
 \end{document}
