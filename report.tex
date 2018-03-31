@@ -22,17 +22,17 @@
 % \chapterstyle{plain} % needed?
 \checkandfixthelayout
 
-\renewcommand{\thesection}{\arabic{section}}
-\makeatletter
-\let\l@section\l@chapter
-\makeatother
-
-\renewcommand{\thesection}{\arabic{section}}
-\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
-\makeatletter
-\let\l@subsection\l@section
-\let\l@section\l@chapter
-\makeatother
+% \renewcommand{\thesection}{\arabic{section}}
+% \makeatletter
+% \let\l@section\l@chapter
+% \makeatother
+% %
+% % \renewcommand{\thesection}{\arabic{section}}
+% % \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+% % \makeatletter
+% % \let\l@subsection\l@section
+% % \let\l@section\l@chapter
+% % \makeatother
 
 % Glossary
 \usepackage[numberedsection=nameref]{glossaries}
@@ -56,6 +56,12 @@
 \chapterstyle{ger}
 
 \maxsecnumdepth{subsection}
+
+% Change memoir chapter margins
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{5pt}{\Huge}
+\titlespacing*{\chapter}{10pt}{10pt}{10pt}
 
 %%  Setup fancy style quotation
 %%  ==================================================================
@@ -110,8 +116,15 @@
 %%  ==================================================================
 %%  End title page
 
+\renewcommand\cftchapteraftersnumb{\normalfont}
+\renewcommand\cftbeforechapterskip{5pt plus 1pt}
 
-\section{Introduction}
+\frontmatter
+\tableofcontents*
+\newpage
+
+\mainmatter
+\chapter{Introduction}
 In the past years machine learning has surpassed humans in some recognition
 tasks, and the development shows no signs of slowing down.
 These developments are however based on relatively old research on neural
@@ -123,21 +136,19 @@ For that reason the breakthroughs in machine learning are hard to transfer
 to the domain of cognitive neuroscience.
 
 As an attempt to remedy this, this project sets out to define a domain-specific
-language (DSL) that is capable of representing the concepts of learning systems
-within the domain of neuroscience.
+language (DSL) that is capable of representing learning systems that resembles
+those from the domain of neuroscience.
+
 The latter part of the paper validates this DSL through the modelling of a small
 learning task. The benchmark will be written in \gls{futhark} and compiled to
-the \gls{opencl} standard, but the DSL abstraction allows it to be executed on
-any machine architecture.
+the \gls{opencl} standard. The language abstraction however, allows it to be
+executed on any machine architecture.
 
-The goal is for the DSL to lay the foundation for a more accurate scientific
-representation of learning and learning concepts, serving as a more approachable
-simulation tool for cognitive neuroscience.
+The goal is for the DSL to explore a more accurate scientific representation of
+learning and learning concepts, serving as a more approachable simulation tool
+for the cognitive neurosciences.
 
-%\subsection{Structure}
-%This paper is structered ...
-
-\subsection{Problem statement}
+\section{Problem statement}
 Building on theories and concepts of the domain of cognitive neuroscience
 this paper examines the hypothesis that
 \textit{
@@ -153,8 +164,12 @@ The paper will approach this in two steps:
         T-maze \autocite{Krechevsky1932}, backed by a traditional machine
         learning implementation in \gls{futhark}.
 \end{enumerate}
+%
+% \section{Structure}
+% This paper is built around theoretical concepts from cognitive neuroscience,
+% \gls{ml} and finally
 
-\section{Theory}
+{\let\clearpage\relax\chapter{Theory}}
 This section accounts for the theoretical foundation of paper and is divided
 into three parts.
 The first part concerns the broad topic of computation and learning in neural
@@ -168,7 +183,7 @@ learning model abstractions in section \ref{case}.
 In the final part the theoretical background for linguistic abstractions and
 the construction of domain specific languages will be treated.
 
-\subsection{Computation and learning in neural systems}
+\section{Learning in neural systems}
 \begin{quote}
   Activity-dependent synaptic plasticity is widely believed to be the basic
   phenomenon underlying learning and memory \autocite{dayan2001}.
@@ -182,7 +197,7 @@ Hebbian learning is believed to play a large part in the plastic nature of the
 brain, especially within learning and memory formation
 \autocite{dayan2001, Johnston2009, Robertson1999}.
 
-\subsubsection{Reorganisation of elementary functions}
+\subsection{Reorganisation of elementary functions}
 \label{ref}
 
 \autocite{Robertson1999} studied patients during
@@ -246,16 +261,108 @@ from the actuation on the surrounding world is received by the comparator,
 who will assert influence on the SAS and GAS to better account for the new
 reality \autocite{Mogensen2017}.
 
-\subsection{Machine learning}
+% TODO: Write about the reality -> encoding -> brain -> decoding -> reality loop
 
+\section{Learning in machines}
+Systems that display the capability of learning (or progressively improving on
+a certain task) are historically associated with the field of \gls{ml}.
+\Gls{ml} goes back to the 1950s, and is tightly coupled
+with artificial intelligence --- the idea of creating intelligence
+in machine \autocite{Nilsson2009, russel2007}.
+It is a large and active research field, why this section will strictly
+focus on a brief introduction and motivation of the topic in the context of
+learning tasks. This will be followed by a more in-depth description of
+multilayered perceptron networks and progressive learning through stochastic
+gradient descent. Both techniques will be employed in the implementation
+and validation sections (sections \ref{volr} and \ref{case}).
 
-\subsection{Language abstractions}
+\subsection{Artificial intelligence and machine learning}
+Nilsson defines \gls{ai} as the "activity devoted to making machines
+intelligent", where \textit{intelligence} is defined as the "quality that
+enables an entity to function appropriately and with foresight in its
+environment" \autocite[13]{Nilsson2009}. As Nilsson also points out, this
+covers a large range of systems such as recommender systems and image recognition
+tasks, which does not display higher cognitive functions \autocite[13]{Nilsson2009}.
+In the context of this paper, the above definition suffices to cover basic
+learning progression.
 
-\section{Volr: A DSL for learning systems}
+\subsection{Learning in perceptron networks}
+Inspired by the biological brain, models for neural networks have been applied
+in computer science since the 1950s, and have become integral part of machine
+learning \autocite{Nilsson2009, Pedersen2017, russel2007}.
+Neurons are essentially functions that operate on some input and respond with
+some output \autocite{russel2007}. The inputs for a neuron are weighted to give
+different input channels - or input dimensions - varying significance. These
+weighted inputs arrive to an activation function that decides whether the
+neuron should ‘fire’ or not \autocite{Nilsson2009}. Sigmoid or hyperbolic tangent
+are popular
+activation functions for numerical predictions because of their steep logistic
+properties while retaining differentiability. Neural networks excel in their
+adaptability and have long been applied to the field of language processing
+\autocite{Jurafsky2000, russel2007}.
+
+Simple neural networks can be stacked in layers, where each neuron will assign
+weights to the input, to determine its significance for the activation function
+\autocite{Nilsson2009}. By tuning the weights of the neurons, such groupings can
+learn to fire on certain input patterns \autocite{russel2007}. However,
+this structure have proved brittle and difficult to train because the
+neurons do not retain their weights for long \autocite{Nilsson2009, russel2007}.
+\autocite{Rumelhart1988} suggested a method to avoid this instability by adjusting
+the weights of the neurons in retrospect with a method called back-propagation
+\autocite{Rumelhart1988, Nilsson2009}. This optimisation is
+operationalised by a function that can describe the \textit{loss} of efficiency
+in a network, and then adjust the weights correspondingly using gradient
+descent \autocite{russel2007}.
+
+\section{Language abstractions}
+A domain specific language (DSL) is a generalisation of a domain into a
+collection of tokens \autocite{Mernik2005}. DSL generally offers more
+expressiveness and require less programming expertise \autocite{Mernik2005, Sestoft2017}.
+However, designing DSLs requires both deep domain knowledge and language
+development expertise \autocite{Mernik2005}. Bad DSL design can become limiting
+and counterproductive \autocite{Mernik2005}.
+
+Contrary to the development of general programming languages, DSL development
+is less standardised within the litterature \autocite{Mernik2005, Deursen2002}.
+However, there are strong recommendations to perform rigorous analysis of the
+target domain and extract precise features necessary for the DSL construction
+\autocite{Mernik2005, Deurson2002}.
+
+DSLs can be implemented either as a standalone language or embedded in a more
+general programming language \autocite{Mernik2005}. A standalone approach
+leverages the freedom of an independent syntax, but avoids the benefits of
+the environment and tools that normally follows a programming language
+\autocite{Mernik2005, Sestoft2017}. Conversely, an embedded approach will be
+more restricted with regards to syntax, but retains the infrastructure of the
+host language \autocite{Mernik2005}.\footnote{\cite{Mernik2005} lists a
+number of benefits and downsides for either approaches. They are too
+detailed to be reported here, but see \autocite[330-331]{Mernik2005}.}
+
+Futher, a DSL can either exploit the features of previous languages os
+invent new constructions \autocite{Mernik2005, Deursen2002}.
+
+{\let\clearpage\relax\chapter{Volr: A DSL for learning systems}}
 \label{volr}
 
-\section{Case study: applying Volr in a Krechevsky maze}
+Embedded vs. standalone
+
+Futhark: \autocite{Henriksen2017}
+
+\gls{opencl}
+
+{\let\clearpage\relax\chapter{Case study: Krechevsky maze}}
 \label{case}
+
+As pointed out by \cite{Mernik2005} quantitative evaluation of a DSL is hard,
+which is why this section will....
+
+\chapter{Discussion}
+
+\section{Conclusion}
+
+\section{Future work}
+% Error reporting
+% A note on competition within the brain (feral neurons)
 
 \clearpage
 
@@ -263,21 +370,23 @@ reality \autocite{Mogensen2017}.
 
 \printbibliography
 
-\section{Appendix A: Volr EBNF}
+\newpage
+
+\appendix
+\chapter{Volr EBNF}
 \label{ebnf}
 
 \begin{verbatim}
   model = ( stimulus | strategy | response )
         , { [ space ] , "," , [ space ] , ( stimulus | strategy | response ) };
 
-  stimulus = "stimulus" , [ space ] , name , [ space ] , dimensionality;
-  response = "response" , [ space ] , dimensionality , [ space ] , input
-           , [ space ] , { "select" , [ space ] , ( "random" | "best" ) };
+  stimulus = "stimulus" , [ space ] , name , [ space ] , dimensionality
+           , [ space ] , "file:" , [ space ] , name;
   strategy = "strategy" , [ space ] , name , [ space ] , input
-           , [ space ] , ( functions | function , [ space ] , { function } );
-
-  functions = "functions" , [ space ] , dimensionality;
-  function = "function" , [ space ] , name , dimensionality;
+           , [ space ] , "functions:" , [ space ] , integer;
+  response = "response" , [ space ] , dimensionality , [ space ] , input
+           , [ space ] , "file:" , [ space ] , name
+           , [ space ] , "learning_rate:" , [ space ] , number;
 
   input = "from" , [ space ] , name , { [ space ] , name };
   dimensionality = "[" , [ space ] , integer , [ space ] , "]";
@@ -294,8 +403,13 @@ reality \autocite{Mogensen2017}.
         | "5" | "6" | "7" | "8" | "9";
 \end{verbatim}
 
-\section{Appendix B: Learning network with two features in Volr}
+\clearpage
+
+\appendix
+\chapter{Learning network with two features in Volr}
 
 \lstinputlisting{two_features.volr}
+
+\clearpage
 
 \end{document}
